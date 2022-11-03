@@ -1,23 +1,40 @@
 import styles from './Players.module.css'
 
+import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { useAuthValue } from '../../context/AuthContext'
 import { useFetchDocuments } from '../../hooks/useFetchDocuments'
+import { useInsertDocument } from '../../hooks/useInsertDocument'
 
 import Player from '../../components/Player/Player'
-import { useState } from 'react'
+
 
 
 
 const Players = () => {
-    const [idPlayers, setIdPlayers] = useState('')
+    const [idPlayers, setIdPlayers] = useState([])
 
+    const [formError, setFormError] = useState('')
+    const { user } = useAuthValue()
+    const { insertDocument, response } = useInsertDocument('active')
     const { documents: players, loading } = useFetchDocuments('players')
 
     const navigate = useNavigate()
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log(idPlayers);
+        setFormError('')
+
+        //checar todos os valores
+        if (!idPlayers) {
+            setFormError('Nenhum jogardor na partida!')
+        }
+        if (formError) return
+        insertDocument({
+            idPlayers,
+            uid: user.uid,
+            createdBy: user.displayName
+        })
 
         navigate('/home')
     }
@@ -30,7 +47,7 @@ const Players = () => {
                             type="checkbox"
                             name={player.playerName}
                             value={player.playerName}
-                            onChange={(e) => setIdPlayers(e.target.value)}
+                            onChange={(e) => setIdPlayers((state) => [...state, { playerName: e.target.value }])}
                         />
                         <Player player={player}></Player>
                     </label>
@@ -48,13 +65,15 @@ const Players = () => {
                         >Add</button>
                     </div>
                 )}
-                {/*{posts && posts.length === 0 && (*/}
-                <div className={styles.button}>
-                    <Link to='/player/create' className='btn'>Cadastrar</Link>
-                </div>
-                {/*)}*/}
+                {players && (
+                    <div className={styles.button}>
+                        <Link to='/player/create' className='btn'>Cadastrar</Link>
+                    </div>
+                )}
 
             </div>
+            {response.error && <p className='error'>{response.error}</p>}
+            {formError && <p className='error'>{formError}</p>}
         </div>
     )
 }
