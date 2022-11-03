@@ -4,28 +4,34 @@
     align-items: center;
 }
 
-.jogador {
+.player {
     width: 85%;
     height: 60px;
-    background: red;
     margin-bottom: 1em;
 }
 
-.buttom_container {
+.player input {
+    display: none;
+}
+
+.button_container {
     width: 85%;
     display: flex;
     justify-content: space-between;
 }
 
-.buttom {
+.button {
     text-align: center;
-
 
 }
 
-.buttom a {
-    padding: 10px 25px;
+.button a {
+    padding: 10px 0;
     display: block;
-    width: 100px;
 
+}
+
+.button a,
+.button button {
+    width: 150px;
 }

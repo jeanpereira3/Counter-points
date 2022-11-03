@@ -24,16 +24,7 @@ const Home = () => {
     return (
         <div className={styles.home}>
             <h1>Veja os nossos posts mais recentes</h1>
-            <form onSubmit={handleSubmit} className={styles.search_form}>
-                <input
-                    type="text"
-                    placeholder='Ou busque por tags...'
-                    name='query'
-                    onChange={(e) => setQuery(e.target.value)}
-                    value={query}
-                />
-                <button className="btn btn-dark">Pesquisar</button>
-            </form>
+
             <div className={styles.buttom_container}>
                 {loading && <p>Carregando...</p>}
                 {posts && posts.length === 0 && (

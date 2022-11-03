@@ -7,6 +7,7 @@ import { useInsertDocument } from '../../hooks/useInsertDocument'
 
 const CreatedPlayer = () => {
     const [playerName, setPlayerName] = useState('')
+    const [level, setLevel] = useState('0')
     const [tags, setTags] = useState([])
     const [formError, setFormError] = useState('')
     const { user } = useAuthValue()
@@ -29,6 +30,7 @@ const CreatedPlayer = () => {
         insertDocument({
             playerName,
             tagsArray,
+            level,
             uid: user.uid,
             createdBy: user.displayName
         })
