@@ -28,9 +28,7 @@ export const useInsertDocument = (docCollection) => {
     const [cancelled, setCancelled] = useState(false)
     console.log(cancelled + '1');
     const checkCancelBeforeDispatch = (action) => {
-        console.log(cancelled + '2');
         if (!cancelled) {
-            console.log('cancelled-if');
             dispatch(action)
         }
     }
@@ -51,20 +49,19 @@ export const useInsertDocument = (docCollection) => {
                 type: 'INSERTED_DOC',
                 payload: insertedDocument,
             })
+            setCancelled(true)
         } catch (error) {
             console.log('catch');
             checkCancelBeforeDispatch({
                 type: 'ERROR',
                 payload: error.message,
+
             })
+            setCancelled(true)
         }
 
     }
 
-    // useEffect(() => {
-    //     console.log(cancelled + '3');
-    //     return () => setCancelled(true)
-    // }, [])
 
     return { insertDocument, response }
 }
