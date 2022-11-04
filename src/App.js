@@ -12,7 +12,6 @@ import NavBar from './components/NavBar/NavBar';
 import Footer from './components/Footer/Footer';
 import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
-import CreatePost from './pages/CreatePost/CreatePost';
 import Dashboard from './pages/Dashboard/Dashboard';
 import Search from './pages/Search/Search';
 import EditPost from './pages/EditPost/EditPost';
@@ -80,7 +79,7 @@ function App() {
               />
             </Routes>
           </div>
-          <NavBottom></NavBottom>
+
           <Footer></Footer>
         </BrowserRouter>
       </AuthProvider>
