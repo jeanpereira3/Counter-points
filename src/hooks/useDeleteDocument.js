@@ -41,25 +41,20 @@ export const useDeleteDocument = (docCollection) => {
         })
         try {
             const deleteDocument = await deleteDoc(doc(db, docCollection, id))
-
             checkCancelBeforeDispatch({
                 type: 'DELETED_DOC',
                 payload: deleteDocument,
             })
+            setCancelled(true)
         } catch (error) {
-            console.log('catch');
             checkCancelBeforeDispatch({
                 type: 'ERROR',
                 payload: error.message,
             })
+            setCancelled(true)
         }
 
     }
-
-    // useEffect(() => {
-    //     console.log(cancelled + '3');
-    //     return () => setCancelled(true)
-    // }, [])
 
     return { deleteDocument, response }
 }
