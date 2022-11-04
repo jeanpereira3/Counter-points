@@ -16,7 +16,7 @@ const Players = () => {
 
     const [formError, setFormError] = useState('')
     const { user } = useAuthValue()
-    const { insertDocument, response } = useInsertDocument('active')
+    const { insertDocument, response } = useInsertDocument('playersActive')
     const { documents: players, loading } = useFetchDocuments('players')
 
     const navigate = useNavigate()
@@ -30,11 +30,15 @@ const Players = () => {
             setFormError('Nenhum jogardor na partida!')
         }
         if (formError) return
-        insertDocument({
-            idPlayers,
-            uid: user.uid,
-            createdBy: user.displayName
-        })
+
+        idPlayers.forEach(idPlayer => {
+            insertDocument({
+                idPlayer: idPlayer.playerName,
+                uid: user.uid,
+                createdBy: user.displayName
+            })
+        });
+
 
         navigate('/home')
     }
