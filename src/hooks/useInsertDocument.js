@@ -1,4 +1,4 @@
-import { useState, useEffect, useReducer } from "react"
+import { useState, useReducer } from "react"
 import { db } from '../firebase/config'
 import { collection, addDoc, Timestamp } from "firebase/firestore"
 
@@ -26,7 +26,7 @@ export const useInsertDocument = (docCollection) => {
 
     //deal with memory leak
     const [cancelled, setCancelled] = useState(false)
-    console.log(cancelled + '1');
+
     const checkCancelBeforeDispatch = (action) => {
         if (!cancelled) {
             dispatch(action)
@@ -38,7 +38,6 @@ export const useInsertDocument = (docCollection) => {
             type: 'LOADING'
         })
         try {
-            console.log('try');
             const newDocument = { ...document, createdAt: Timestamp.now() }
             const insertedDocument = await addDoc(
                 collection(db, docCollection),

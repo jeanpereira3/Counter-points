@@ -7,38 +7,48 @@ import { useFetchDocuments } from '../../hooks/useFetchDocuments'
 import { useInsertDocument } from '../../hooks/useInsertDocument'
 
 import Player from '../../components/Player/Player'
+import { isEmpty } from '@firebase/util'
 
 
 
 
 const Players = () => {
-    const [idPlayers, setIdPlayers] = useState([])
+    const [player, setPlayer] = useState('')
 
-    const [formError, setFormError] = useState('')
+    const [error, setError] = useState('')
     const { user } = useAuthValue()
     const { insertDocument, response } = useInsertDocument('playersActive')
     const { documents: players, loading } = useFetchDocuments('players')
+    const { documents: playersActive, loadingActive } = useFetchDocuments('playersActive')
+
 
     const navigate = useNavigate()
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        setFormError('')
+        setError('')
 
         //checar todos os valores
-        if (!idPlayers) {
-            setFormError('Nenhum jogardor na partida!')
-        }
-        if (formError) return
 
-        idPlayers.forEach(idPlayer => {
+        //playersActive.filter(active => active.idPlayer === player)
+
+        // playersActive.map((active) => {
+        //     console.log(existentPlayer + '       map');
+        //     console.log(active.idPlayer + '       active');
+        //     console.log(player);
+        //     if (active.idPlayer === player) {
+        //         return setExistentPlayer(false) 
+        //     }
+        // })
+        const existentPlayer = playersActive.filter(active => active.idPlayer === player)
+
+        if (isEmpty(existentPlayer)) {
             insertDocument({
-                idPlayer: idPlayer.playerName,
+                idPlayer: player,
                 uid: user.uid,
                 createdBy: user.displayName
             })
-        });
-
+        }
 
         navigate('/home')
     }
@@ -51,7 +61,7 @@ const Players = () => {
                             type="checkbox"
                             name={player.playerName}
                             value={player.playerName}
-                            onChange={(e) => setIdPlayers((state) => [...state, { playerName: e.target.value }])}
+                            onChange={(e) => setPlayer(e.target.value)}
                         />
                         <Player player={player}></Player>
                     </label>
@@ -77,7 +87,7 @@ const Players = () => {
 
             </div>
             {response.error && <p className='error'>{response.error}</p>}
-            {formError && <p className='error'>{formError}</p>}
+            {error && <p className='error'>{error}</p>}
         </div>
     )
 }

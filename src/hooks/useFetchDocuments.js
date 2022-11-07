@@ -30,9 +30,11 @@ export const useFetchDocuments = (docCollection, search = null, uid = null) => {
                 if (search) {
                     q = await query(
                         collectionRef,
-                        where('tagsArray', 'array-contains', search),
+                        where('idPlayer', '==', search),
                         orderBy('createdAt', 'desc')
                     )
+
+                    console.log(search);
                 } else if (uid) {
                     q = await query(
                         collectionRef,
@@ -55,7 +57,6 @@ export const useFetchDocuments = (docCollection, search = null, uid = null) => {
 
                 setLoading(false)
             } catch (error) {
-                console.log(error);
                 setError(error.message)
                 setLoading(false)
             }
