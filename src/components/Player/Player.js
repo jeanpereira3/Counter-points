@@ -1,5 +1,8 @@
 import styles from './Player.module.css'
 
+import { useUpdateDocument } from '../../hooks/useUpdateDocument'
+import { useAuthValue } from '../../context/AuthContext'
+
 import {
     LeadingActions,
     SwipeableList,
@@ -9,12 +12,28 @@ import {
 } from 'react-swipeable-list';
 import 'react-swipeable-list/dist/styles.css';
 
-const Player = ({ player }) => {
+const Player = ({ player, active }) => {
+    const { user } = useAuthValue()
+    const { updateDocument, reponse } = useUpdateDocument('playersActive')
+
+    const handleSubmit = () => {
+        console.log('qsddddd');
+        const data = {
+            idPlayer: active.idPlayer,
+            pts: 1,
+            uid: user.uid,
+            createdBy: user.displayName
+        }
+        updateDocument(active.id, data)
+    }
+
 
     const leadingActions = () => (
         <LeadingActions>
-            <SwipeAction onClick={() => console.info('swipe action triggered')}>
-                Action name
+            <SwipeAction onClick={handleSubmit}>
+                <div className={styles.win}>
+                    <span>win</span>
+                </div>
             </SwipeAction>
         </LeadingActions>
     );
@@ -25,7 +44,7 @@ const Player = ({ player }) => {
                 destructive={true}
                 onClick={() => console.info('swipe action triggered')}
             >
-                Delete
+                delete
             </SwipeAction>
         </TrailingActions>
     );

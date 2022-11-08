@@ -45,6 +45,7 @@ const Players = () => {
         if (isEmpty(existentPlayer)) {
             insertDocument({
                 idPlayer: player,
+                pts: 0,
                 uid: user.uid,
                 createdBy: user.displayName
             })

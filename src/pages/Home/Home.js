@@ -43,7 +43,7 @@ const Home = () => {
                                     value={active.id}
                                     onChange={(e) => setIdPlayers(e.target.value)}
                                 />
-                                <Player player={player}></Player>
+                                <Player player={player} active={active}></Player>
                             </label>
                         )
                     ))
