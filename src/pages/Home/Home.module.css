@@ -25,8 +25,7 @@
 
 .player {
     width: 85%;
-    height: 60px;
-    margin-bottom: 1em;
+    height: 100%;
 }
 
 .player input {

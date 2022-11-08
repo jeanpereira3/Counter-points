@@ -14,7 +14,6 @@ import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
 import Dashboard from './pages/Dashboard/Dashboard';
 import Search from './pages/Search/Search';
-import EditPost from './pages/EditPost/EditPost';
 import NavBottom from './components/NavBottom/NavBottom';
 import Players from './pages/Players/Players';
 import CreatedPlayer from './pages/CreatedPlayer/CreatedPlayer';
