@@ -17,10 +17,9 @@ const Player = ({ player, active }) => {
     const { updateDocument, reponse } = useUpdateDocument('playersActive')
 
     const handleSubmit = () => {
-        console.log('qsddddd');
         const data = {
             idPlayer: active.idPlayer,
-            pts: 1,
+            pts: active.pts += 1,
             uid: user.uid,
             createdBy: user.displayName
         }
@@ -57,7 +56,7 @@ const Player = ({ player, active }) => {
             >
                 <div className={styles.player}>
                     <h2>{player.playerName}<span>LV{player.level}</span></h2>
-                    <span>1</span>
+                    <span>{active.pts}</span>
                 </div>
             </SwipeableListItem>
         </SwipeableList>
