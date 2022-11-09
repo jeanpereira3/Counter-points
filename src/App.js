@@ -60,10 +60,6 @@ function App() {
                 path='/register'
                 element={!user ? <Register></Register> : <Navigate to='/home' />}
               />
-              {/* <Route
-                path='/posts/edit/:id'
-                element={user ? <EditPost></EditPost> : <Navigate to='/login' />}
-              /> */}
               <Route
                 path='/players'
                 element={user ? <Players></Players> : <Navigate to='/login' />}
@@ -78,7 +74,7 @@ function App() {
               />
             </Routes>
           </div>
-
+          <NavBottom></NavBottom>
           <Footer></Footer>
         </BrowserRouter>
       </AuthProvider>

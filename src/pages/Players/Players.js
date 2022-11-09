@@ -29,17 +29,6 @@ const Players = () => {
         setError('')
 
         //checar todos os valores
-
-        //playersActive.filter(active => active.idPlayer === player)
-
-        // playersActive.map((active) => {
-        //     console.log(existentPlayer + '       map');
-        //     console.log(active.idPlayer + '       active');
-        //     console.log(player);
-        //     if (active.idPlayer === player) {
-        //         return setExistentPlayer(false) 
-        //     }
-        // })
         const existentPlayer = playersActive.filter(active => active.idPlayer === player)
 
         if (isEmpty(existentPlayer)) {
@@ -80,12 +69,6 @@ const Players = () => {
                         >Add</button>
                     </div>
                 )}
-                {players && (
-                    <div className={styles.button}>
-                        <Link to='/player/create' className='btn'>Cadastrar</Link>
-                    </div>
-                )}
-
             </div>
             {response.error && <p className='error'>{response.error}</p>}
             {error && <p className='error'>{error}</p>}

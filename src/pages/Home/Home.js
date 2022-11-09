@@ -55,11 +55,7 @@ const Home = () => {
 
             <div className={styles.button_container}>
                 {loading && <p>Carregando...</p>}
-                {players && (
-                    <div className={styles.button}>
-                        <Link to='/players' className='btn'>Add</Link>
-                    </div>
-                )}
+
                 {players && (
                     <div className={styles.button}>
                         <button

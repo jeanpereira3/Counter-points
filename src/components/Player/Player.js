@@ -12,7 +12,7 @@ import {
 } from 'react-swipeable-list';
 import 'react-swipeable-list/dist/styles.css';
 
-const Player = ({ player, active }) => {
+const Player = ({ player, active = null }) => {
     const { user } = useAuthValue()
     const { updateDocument, reponse } = useUpdateDocument('playersActive')
 
@@ -56,7 +56,7 @@ const Player = ({ player, active }) => {
             >
                 <div className={styles.player}>
                     <h2>{player.playerName}<span>LV{player.level}</span></h2>
-                    <span>{active.pts}</span>
+                    <span>{active && active.pts}</span>
                 </div>
             </SwipeableListItem>
         </SwipeableList>
