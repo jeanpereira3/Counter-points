@@ -1,5 +1,5 @@
 .buttom_container {
-    width: 85%;
+    width: 95%;
     display: flex;
     justify-content: space-between;
 }
@@ -24,7 +24,7 @@
 }
 
 .player {
-    width: 85%;
+    width: 95%;
     height: 100%;
 }
 

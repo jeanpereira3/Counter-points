@@ -55,16 +55,6 @@ const Home = () => {
 
             <div className={styles.button_container}>
                 {loading && <p>Carregando...</p>}
-
-                {players && (
-                    <div className={styles.button}>
-                        <button
-                            className='btn btn-danger'
-                            onClick={() => deleteDocument(idPlayers)}
-                        >Remover</button>
-                    </div>
-                )}
-
             </div>
 
         </div>
