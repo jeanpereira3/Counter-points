@@ -6,12 +6,7 @@ import { useAuthValue } from '../../context/AuthContext'
 import { useFetchDocuments } from '../../hooks/useFetchDocuments'
 import { useUpdateDocument } from '../../hooks/useUpdateDocument'
 
-
 import Player from '../../components/Player/Player'
-// import { isEmpty } from '@firebase/util'
-
-
-
 
 const Players = () => {
 
@@ -30,7 +25,6 @@ const Players = () => {
     const handleSubmit = (e) => {
         e.preventDefault()
         // setError('')
-        console.log(id);
 
         const data = {
             playerActive: true,
@@ -39,15 +33,6 @@ const Players = () => {
         }
 
         updateDocument(id, data)
-        // if (isEmpty(existentPlayer)) {
-        //     insertDocument({
-        //         idPlayer: player,
-        //         pts: 0,
-        //         
-        //         
-        //     })
-        // }
-
         navigate('/home')
     }
     return (
@@ -78,8 +63,8 @@ const Players = () => {
                     </div>
                 )}
             </div>
-            {/* {response.error && <p className='error'>{response.error}</p>}
-            {error && <p className='error'>{error}</p>} */}
+            {response.error && <p className='error'>{response.error}</p>}
+            {/* {error && <p className='error'>{error}</p>} */}
         </div>
     )
 }

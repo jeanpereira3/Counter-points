@@ -30,8 +30,8 @@ export const useFetchDocuments = (docCollection, search = null, uid = null) => {
                 if (search) {
                     q = await query(
                         collectionRef,
-                        where('idPlayer', '==', search),
-                        orderBy('createdAt', 'desc')
+                        where('playerActive', '==', search),
+                        orderBy('pts', 'desc')
                     )
 
                     console.log(search);
