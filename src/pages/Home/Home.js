@@ -10,7 +10,6 @@ import Player from '../../components/Player/Player'
 const Home = () => {
     const { documents: players, loading } = useFetchDocuments('players')
     const { documents: playersActive } = useFetchDocuments('playersActive')
-    const { deleteDocument } = useDeleteDocument('playersActive')
     const [idPlayers, setIdPlayers] = useState('')
 
 

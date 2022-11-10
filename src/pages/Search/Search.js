@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 import { useFetchDocuments } from '../../hooks/useFetchDocuments'
 import { useQuery } from '../../hooks/useQuery'
-import PostDetail from '../../components/PostDetail.js/PostDetail'
+// import PostDetail from '../../components/PostDetail.js/PostDetail'
 
 const Search = () => {
 
@@ -23,9 +23,9 @@ const Search = () => {
                         <Link to='/home' className='btn btn-dark'>Voltar</Link>
                     </div>
                 )}
-                {posts && posts.map((post) => (
+                {/* {posts && posts.map((post) => (
                     <PostDetail key={post.id} post={post} />
-                ))}
+                ))} */}
             </div>
         </div>
     )

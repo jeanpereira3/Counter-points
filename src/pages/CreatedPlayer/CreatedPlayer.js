@@ -7,8 +7,10 @@ import { useInsertDocument } from '../../hooks/useInsertDocument'
 
 const CreatedPlayer = () => {
     const [playerName, setPlayerName] = useState('')
-    const [level, setLevel] = useState('0')
-    const [tags, setTags] = useState([])
+    const [playerActive, setPlayerActive] = useState(false)
+    const [level, setLevel] = useState(0)
+    const [pts, setPts] = useState(0)
+
     const [formError, setFormError] = useState('')
     const { user } = useAuthValue()
     const { insertDocument, response } = useInsertDocument('players')
@@ -18,19 +20,17 @@ const CreatedPlayer = () => {
         e.preventDefault()
         setFormError('')
 
-        //criar o array de tags
-        const tagsArray = tags.split(',').map(
-            (tag) => tag.trim().toLowerCase()
-        )
+
         //checar todos os valores
-        if (!playerName || !tags) {
+        if (!playerName) {
             setFormError('Por favor, preencha todos os campos')
         }
         if (formError) return
         insertDocument({
             playerName,
-            tagsArray,
+            playerActive,
             level,
+            pts,
             uid: user.uid,
             createdBy: user.displayName
         })
@@ -52,18 +52,6 @@ const CreatedPlayer = () => {
                         placeholder='Nome do jogador'
                         onChange={(e) => setPlayerName(e.target.value)}
                         value={playerName}
-                    />
-                </label>
-
-                <label>
-                    <span>Tags:</span>
-                    <input
-                        type="text"
-                        name='tags'
-                        required
-                        placeholder='Insira as tags separadas por vírgula'
-                        onChange={(e) => setTags(e.target.value)}
-                        value={tags}
                     />
                 </label>
 

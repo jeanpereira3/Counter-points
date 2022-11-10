@@ -57,10 +57,10 @@ export const useUpdateDocument = (docCollection) => {
 
     }
 
-    // useEffect(() => {
-    //     console.log(cancelled + '3');
-    //     return () => setCancelled(true)
-    // }, [])
+    useEffect(() => {
+        console.log(cancelled + '3');
+        return () => setCancelled(true)
+    }, [])
 
     return { updateDocument, response }
 }

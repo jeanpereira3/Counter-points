@@ -45,16 +45,20 @@ export const useDeleteDocument = (docCollection) => {
                 type: 'DELETED_DOC',
                 payload: deleteDocument,
             })
-            setCancelled(true)
+
         } catch (error) {
             checkCancelBeforeDispatch({
                 type: 'ERROR',
                 payload: error.message,
             })
-            setCancelled(true)
+
         }
 
     }
+
+    useEffect(() => {
+        return () => setCancelled(true)
+    }, [])
 
     return { deleteDocument, response }
 }
