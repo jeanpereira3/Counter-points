@@ -1,44 +1,52 @@
 import styles from './Players.module.css'
 
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useAuthValue } from '../../context/AuthContext'
 import { useFetchDocuments } from '../../hooks/useFetchDocuments'
-import { useInsertDocument } from '../../hooks/useInsertDocument'
+import { useUpdateDocument } from '../../hooks/useUpdateDocument'
+
 
 import Player from '../../components/Player/Player'
-import { isEmpty } from '@firebase/util'
+// import { isEmpty } from '@firebase/util'
 
 
 
 
 const Players = () => {
-    const [player, setPlayer] = useState('')
 
-    const [error, setError] = useState('')
+    const [id, setId] = useState()
+
+    // const [error, setError] = useState('')
     const { user } = useAuthValue()
-    const { insertDocument, response } = useInsertDocument('playersActive')
+
     const { documents: players, loading } = useFetchDocuments('players')
-    const { documents: playersActive, loadingActive } = useFetchDocuments('playersActive')
+    const { updateDocument, response } = useUpdateDocument('players')
+
 
 
     const navigate = useNavigate()
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        setError('')
+        // setError('')
+        console.log(id);
 
-        //checar todos os valores
-        const existentPlayer = playersActive.filter(active => active.idPlayer === player)
-
-        if (isEmpty(existentPlayer)) {
-            insertDocument({
-                idPlayer: player,
-                pts: 0,
-                uid: user.uid,
-                createdBy: user.displayName
-            })
+        const data = {
+            playerActive: true,
+            uid: user.uid,
+            createdBy: user.displayName
         }
+
+        updateDocument(id, data)
+        // if (isEmpty(existentPlayer)) {
+        //     insertDocument({
+        //         idPlayer: player,
+        //         pts: 0,
+        //         
+        //         
+        //     })
+        // }
 
         navigate('/home')
     }
@@ -46,12 +54,12 @@ const Players = () => {
         <div className={styles.players}>
             {players && (
                 players.map((player) => (
-                    <label key={player.playerName} className={styles.player}>
+                    <label key={player.id} className={styles.player}>
                         <input
                             type="checkbox"
                             name={player.playerName}
                             value={player.playerName}
-                            onChange={(e) => setPlayer(e.target.value)}
+                            onChange={(e) => setId(player.id)}
                         />
                         <Player player={player}></Player>
                     </label>
@@ -70,8 +78,8 @@ const Players = () => {
                     </div>
                 )}
             </div>
-            {response.error && <p className='error'>{response.error}</p>}
-            {error && <p className='error'>{error}</p>}
+            {/* {response.error && <p className='error'>{response.error}</p>}
+            {error && <p className='error'>{error}</p>} */}
         </div>
     )
 }
