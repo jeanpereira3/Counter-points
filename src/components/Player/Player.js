@@ -1,5 +1,6 @@
 import styles from './Player.module.css'
 
+import { useEffect, useState } from 'react';
 import { useDeleteDocument } from '../../hooks/useDeleteDocument';
 import { useUpdateDocument } from '../../hooks/useUpdateDocument'
 import { useAuthValue } from '../../context/AuthContext'
@@ -20,20 +21,29 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
 
-const Player = ({ player, active = null }) => {
+const Player = ({ player }) => {
     const { user } = useAuthValue()
-    const { updateDocument, reponse } = useUpdateDocument('playersActive')
-    const { deleteDocument } = useDeleteDocument('playersActive')
+    const { updateDocument, response } = useUpdateDocument('players')
 
-    const handleSubmit = () => {
-        const data = {
-            idPlayer: active.idPlayer,
-            pts: active.pts += 1,
-            uid: user.uid,
-            createdBy: user.displayName
+    const [data, setData] = useState({})
+
+    const handleSubmit = (action) => {
+        switch (action) {
+            case 'SELECT_PLAYER':
+                setData({
+                    playerActive: !player.playerActive,
+                    uid: user.uid,
+                    createdBy: user.displayName
+                })
+                break;
+            default:
+                break;
         }
-        updateDocument(active.id, data)
     }
+
+    useEffect(() => {
+        updateDocument(player.id, data)
+    }, [data])
 
 
     const leadingActions = () => (
@@ -50,47 +60,56 @@ const Player = ({ player, active = null }) => {
         <TrailingActions>
             <SwipeAction
                 destructive={true}
-                onClick={() => deleteDocument(active.id)}
+                onClick={() => handleSubmit('SELECT_PLAYER')}
             >
-                <div className={styles.delete}>
-                    <span>Delete</span>
-                </div>
+                {player && player.playerActive ? (
+                    <div className={styles.delete}>
+                        <span>Remover</span>
+                    </div>
+                ) : (
+                    <div className={styles.delete}>
+                        <span>Adicionar</span>
+                    </div>
+                )}
+
+
             </SwipeAction>
         </TrailingActions>
     );
     return (
-
-        <SwipeableList>
-            <SwipeableListItem
-                leadingActions={leadingActions()}
-                trailingActions={trailingActions()}
-            >
-                <List sx={{ width: '100%', maxWidth: 640, bgcolor: 'background.paper' }}>
-                    <ListItem
-                        sx={{ height: '60px' }}
-                        //key={value}
-                        secondaryAction={
-                            <ListItemText
-                                edge="end"
-                                primary={active && active.pts}
-                            />
-                        }
-                        disablePadding
-                    >
-                        <ListItemButton>
-                            <ListItemAvatar>
-                                <Avatar
-                                    alt={`Avatar n°`}
-                                    src={`/static/images/avatar/.jpg`}
+        <>
+            <SwipeableList>
+                <SwipeableListItem
+                    leadingActions={leadingActions()}
+                    trailingActions={trailingActions()}
+                >
+                    <List sx={{ width: '100%', maxWidth: 640, bgcolor: 'background.paper' }}>
+                        <ListItem
+                            sx={{ height: '60px' }}
+                            //key={value}
+                            secondaryAction={
+                                <ListItemText
+                                    edge="end"
+                                    primary={player.pts}
                                 />
-                            </ListItemAvatar>
-                            <ListItemText id={1} primary={player.playerName} />
-                        </ListItemButton>
-                    </ListItem>
-                </List>
-            </SwipeableListItem>
-        </SwipeableList>
+                            }
+                            disablePadding
+                        >
+                            <ListItemButton>
+                                <ListItemAvatar>
+                                    <Avatar
+                                        alt={`Avatar n°`}
+                                        src={`/static/images/avatar/.jpg`}
+                                    />
+                                </ListItemAvatar>
+                                <ListItemText id={1} primary={player.playerName} />
+                            </ListItemButton>
+                        </ListItem>
+                    </List>
+                </SwipeableListItem>
 
+            </SwipeableList>
+        </>
     )
 
 }

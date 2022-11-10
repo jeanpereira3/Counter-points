@@ -10,59 +10,21 @@ import Player from '../../components/Player/Player'
 
 const Players = () => {
 
-    const [id, setId] = useState()
-
     // const [error, setError] = useState('')
-    const { user } = useAuthValue()
+    // const { user } = useAuthValue()
 
     const { documents: players, loading } = useFetchDocuments('players')
     const { updateDocument, response } = useUpdateDocument('players')
 
-
-
-    const navigate = useNavigate()
-
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        // setError('')
-
-        const data = {
-            playerActive: true,
-            uid: user.uid,
-            createdBy: user.displayName
-        }
-
-        updateDocument(id, data)
-        navigate('/home')
-    }
     return (
         <div className={styles.players}>
-            {players && (
-                players.map((player) => (
-                    <label key={player.id} className={styles.player}>
-                        <input
-                            type="checkbox"
-                            name={player.playerName}
-                            value={player.playerName}
-                            onChange={(e) => setId(player.id)}
-                        />
-                        <Player player={player}></Player>
-                    </label>
-                ))
-            )}
+            {players && (players.map((player) => (
 
 
-            <div className={styles.button_container}>
-                {loading && <p>Carregando...</p>}
-                {players && (
-                    <div className={styles.button}>
-                        <button
-                            className='btn'
-                            onClick={handleSubmit}
-                        >Add</button>
-                    </div>
-                )}
-            </div>
+                <Player key={player.id} player={player}></Player>
+
+            )))}
+
             {response.error && <p className='error'>{response.error}</p>}
             {/* {error && <p className='error'>{error}</p>} */}
         </div>
