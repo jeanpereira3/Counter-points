@@ -8,16 +8,6 @@ import { useDeleteDocument } from '../../hooks/useDeleteDocument'
 import Player from '../../components/Player/Player'
 
 const Home = () => {
-
-    //const navigate = useNavigate()
-
-    // const handleSubmit = (e) => {
-    //     e.preventDefault()
-
-    //     if (query) {
-    //         return navigate(`/search?q=${query}`)
-    //     }
-    // }
     const { documents: players, loading } = useFetchDocuments('players')
     const { documents: playersActive } = useFetchDocuments('playersActive')
     const { deleteDocument } = useDeleteDocument('playersActive')
