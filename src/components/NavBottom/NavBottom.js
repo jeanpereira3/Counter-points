@@ -39,7 +39,7 @@ const NavBottom = () => {
         <>
             {user && (
                 <Box sx={{ width: 500 }}>
-                    <Paper sx={{ position: 'fixed', bottom: 36, left: 0, right: 0 }} elevation={1}>
+                    <Paper sx={{ position: 'fixed', bottom: 36, left: 0, right: 0 }} elevation={0}>
                         <BottomNavigation
                             showLabels
                             value={value}

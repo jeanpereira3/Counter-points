@@ -1,6 +1,18 @@
 import { useState, useEffect, useReducer } from "react"
 import { db } from '../firebase/config'
-import { doc, updateDoc } from "firebase/firestore"
+import {
+    doc,
+    where,
+    updateDoc,
+    collection,
+    query,
+    getDocs
+} from "firebase/firestore"
+
+
+
+
+
 
 const initalState = {
     loading: null,
@@ -8,7 +20,6 @@ const initalState = {
 }
 
 const updateReducer = (state, action) => {
-    console.log('Reducer');
     switch (action.type) {
         case 'LOADING':
             return { loading: true, error: null }
@@ -35,18 +46,34 @@ export const useUpdateDocument = (docCollection) => {
         }
     }
 
-    const updateDocument = async (id, data) => {
+    const updateDocument = async (id = null, data) => {
         checkCancelBeforeDispatch({
             type: 'LOADING'
         })
         try {
-            const docRef = await doc(db, docCollection, id)
-            const updatedDocument = await updateDoc(docRef, data)
+            if (id) {
+                const docRef = await doc(db, docCollection, id)
+                const updatedDocument = await updateDoc(docRef, data)
 
-            checkCancelBeforeDispatch({
-                type: 'UPDATE_DOC',
-                payload: updatedDocument,
-            })
+                checkCancelBeforeDispatch({
+                    type: 'UPDATE_DOC',
+                    payload: updatedDocument,
+                })
+            } else if (id == null) {
+                const q = query(collection(db, docCollection), where('pts', ">", 0))
+                const querySnapshot = await getDocs(q);
+                querySnapshot.forEach(async (docM) => {
+                    const docRef = await doc(db, docCollection, docM.id)
+                    const updatedDocument = await updateDoc(docRef, data)
+
+                    checkCancelBeforeDispatch({
+                        type: 'UPDATE_DOC',
+                        payload: updatedDocument,
+                    })
+
+                })
+            }
+
         } catch (error) {
             console.log('catch');
             checkCancelBeforeDispatch({
@@ -55,10 +82,13 @@ export const useUpdateDocument = (docCollection) => {
             })
         }
 
+
+
+
+
     }
 
     useEffect(() => {
-        console.log(cancelled + '3');
         return () => setCancelled(true)
     }, [])
 

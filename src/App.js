@@ -51,7 +51,6 @@ function App() {
               />
               <Route path='/about' element={<About></About>} />
               <Route path='/search' element={<Search></Search>} />
-              {/* <Route path='/posts/:id' element={<Post></Post>} /> */}
               <Route
                 path='/login'
                 element={!user ? <Login></Login> : <Navigate to='/home' />}

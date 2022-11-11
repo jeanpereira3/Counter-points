@@ -20,6 +20,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
+import { increment } from 'firebase/firestore';
 
 const Player = ({ player }) => {
     const { user } = useAuthValue()
@@ -38,7 +39,7 @@ const Player = ({ player }) => {
                 break;
             case 'WIN':
                 setData({
-                    pts: player.pts += 1,
+                    pts: increment(1),
                     uid: user.uid,
                     createdBy: user.displayName
                 })
@@ -90,7 +91,7 @@ const Player = ({ player }) => {
                     leadingActions={leadingActions()}
                     trailingActions={trailingActions()}
                 >
-                    <List sx={{ width: '100%', maxWidth: 640, bgcolor: 'background.paper' }}>
+                    <List sx={{ width: '100%', padding: '0', maxWidth: 640, bgcolor: 'background.paper' }}>
                         <ListItem
                             sx={{ height: '60px' }}
                             //key={value}
