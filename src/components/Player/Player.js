@@ -36,6 +36,13 @@ const Player = ({ player }) => {
                     createdBy: user.displayName
                 })
                 break;
+            case 'WIN':
+                setData({
+                    pts: player.pts += 1,
+                    uid: user.uid,
+                    createdBy: user.displayName
+                })
+                break;
             default:
                 break;
         }
@@ -48,7 +55,7 @@ const Player = ({ player }) => {
 
     const leadingActions = () => (
         <LeadingActions>
-            <SwipeAction onClick={handleSubmit}>
+            <SwipeAction onClick={() => handleSubmit('WIN')}>
                 <div className={styles.win}>
                     <span>win</span>
                 </div>
