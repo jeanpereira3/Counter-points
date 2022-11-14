@@ -4,38 +4,52 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuthValue } from '../../context/AuthContext'
 import { useInsertDocument } from '../../hooks/useInsertDocument'
+import { useFetchDocuments } from '../../hooks/useFetchDocuments'
+
 
 const CreatedPlayer = () => {
     const [playerName, setPlayerName] = useState('')
-    const [playerActive, setPlayerActive] = useState(false)
-    const [level, setLevel] = useState(0)
-    const [pts, setPts] = useState(0)
+    const [playerActive] = useState(true)
+    const [level] = useState(0)
+    const [pts] = useState(0)
 
     const [formError, setFormError] = useState('')
+    const [formSuccess, setFormSuccess] = useState('')
     const { user } = useAuthValue()
     const { insertDocument, response } = useInsertDocument('players')
+    const { documents: players, loading, error } = useFetchDocuments('players')
+
     const navigate = useNavigate()
+
+
+
+
 
     const handleSubmit = (e) => {
         e.preventDefault()
         setFormError('')
+        setFormSuccess('')
 
-
-        //checar todos os valores
-        if (!playerName) {
+        //checar se player ja existe
+        //Precisa ser refatoracao
+        const filteredPlayer = players.filter(player => player.playerName === playerName)
+        if (filteredPlayer.length > 0) {
+            setFormError('Esse jogador ja existe')
+            console.log(filteredPlayer);
+        } else if (!playerName) {
             setFormError('Por favor, preencha todos os campos')
+        } else {
+            insertDocument({
+                playerName,
+                playerActive,
+                level,
+                pts,
+                uid: user.uid,
+                createdBy: user.displayName
+            })
+            setFormSuccess('Jogador adicionado com sucesso')
         }
-        if (formError) return
-        insertDocument({
-            playerName,
-            playerActive,
-            level,
-            pts,
-            uid: user.uid,
-            createdBy: user.displayName
-        })
-
-        navigate('/home')
+        //navigate('/home')
     }
 
     return (
@@ -59,6 +73,7 @@ const CreatedPlayer = () => {
                 {response.loading && <button className='btn' disabled>Aguarde</button>}
                 {response.error && <p className='error'>{response.error}</p>}
                 {formError && <p className='error'>{formError}</p>}
+                {formSuccess && !response.loading && <p className='success'>{formSuccess}</p>}
             </form>
         </div>
     )

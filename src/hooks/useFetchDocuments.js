@@ -11,7 +11,10 @@ import {
 
 
 
-export const useFetchDocuments = (docCollection, search = null, uid = null) => {
+export const useFetchDocuments = (docCollection, playerActive = null, uid = null, playerName = null) => {
+
+
+
     const [documents, setDocuments] = useState(null)
     const [error, setError] = useState(null)
     const [loading, setLoading] = useState(null)
@@ -24,23 +27,30 @@ export const useFetchDocuments = (docCollection, search = null, uid = null) => {
             setLoading(true)
             const collectionRef = await collection(db, docCollection)
 
+
             try {
                 let q
 
-                if (search) {
+                if (playerActive) {
                     q = await query(
                         collectionRef,
-                        where('playerActive', '==', search),
+                        where('playerActive', '==', playerActive),
                         orderBy('pts', 'desc')
                     )
-
-                    console.log(search);
                 } else if (uid) {
                     q = await query(
                         collectionRef,
                         where('uid', '==', uid),
                         orderBy('createdAt', 'desc')
                     )
+                } else if (playerName) {
+                    q = await query(
+                        collectionRef,
+                        where('playerName', '==', playerName),
+                        orderBy('createdAt', 'desc')
+                    )
+
+                    console.log(playerName);
                 } else {
                     q = await query(collectionRef, orderBy('createdAt', 'desc'))
                 }
@@ -62,7 +72,7 @@ export const useFetchDocuments = (docCollection, search = null, uid = null) => {
         }
 
         loadData()
-    }, [docCollection, search, uid, cancelled])
+    }, [docCollection, playerActive, uid, playerName, cancelled])
 
     useEffect(() => {
         return () => setCancelled(true)

@@ -8,7 +8,7 @@ import {
 
 
 
-export const useFetchDocument = (docCollection, idPlayer) => {
+export const useFetchDocument = (docCollection, id) => {
     const [document, setDocument] = useState(null)
     const [error, setError] = useState(null)
     const [loading, setLoading] = useState(null)
@@ -20,7 +20,7 @@ export const useFetchDocument = (docCollection, idPlayer) => {
             if (cancelled) return
             setLoading(true)
             try {
-                const docRef = await doc(db, docCollection, idPlayer)
+                const docRef = await doc(db, docCollection, id)
                 const docSnap = await getDoc(docRef)
 
                 setDocument(docSnap.data())
@@ -34,7 +34,7 @@ export const useFetchDocument = (docCollection, idPlayer) => {
         }
 
         loadDocument()
-    }, [docCollection, idPlayer, cancelled])
+    }, [docCollection, id, cancelled])
 
     useEffect(() => {
         return () => setCancelled(true)
