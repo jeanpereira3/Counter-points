@@ -10,10 +10,6 @@ import {
 } from "firebase/firestore"
 
 
-
-
-
-
 const initalState = {
     loading: null,
     error: null
@@ -46,7 +42,7 @@ export const useUpdateDocument = (docCollection) => {
         }
     }
 
-    const updateDocument = async (id = null, data) => {
+    const updateDocument = async (id = null, data, uid = null) => {
         checkCancelBeforeDispatch({
             type: 'LOADING'
         })
@@ -60,7 +56,7 @@ export const useUpdateDocument = (docCollection) => {
                     payload: updatedDocument,
                 })
             } else if (id == null) {
-                const q = query(collection(db, docCollection), where('pts', ">", 0))
+                const q = query(collection(db, docCollection), where('uid', '==', uid), where('pts', ">", 0))
                 const querySnapshot = await getDocs(q);
                 querySnapshot.forEach(async (docM) => {
                     const docRef = await doc(db, docCollection, docM.id)

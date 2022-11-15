@@ -16,12 +16,7 @@ const CreatedPlayer = () => {
     const [formSuccess, setFormSuccess] = useState('')
     const { user } = useAuthValue()
     const { insertDocument, response } = useInsertDocument('players')
-    const { documents: players, loading, error } = useFetchDocuments('players')
-
-
-
-
-
+    const { documents: players, loading, error } = useFetchDocuments('players', null, user.uid)
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -74,7 +69,7 @@ const CreatedPlayer = () => {
                 {error && <p className='error'>{error}</p>}
 
                 {formError && <p className='error'>{formError}</p>}
-                {formSuccess && !response.loading && !error && <p className='success'>{formSuccess}</p>}
+                {formSuccess && !response.loading && !error && !response.error && <p className='success'>{formSuccess}</p>}
             </form>
         </div>
     )

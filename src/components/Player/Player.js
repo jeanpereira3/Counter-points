@@ -1,8 +1,11 @@
 import styles from './Player.module.css'
 
 import { useEffect, useState } from 'react';
-import { useDeleteDocument } from '../../hooks/useDeleteDocument';
+import { useDeleteDocument } from '../../hooks/useDeleteDocument'
 import { useUpdateDocument } from '../../hooks/useUpdateDocument'
+import { useFetchDocuments } from '../../hooks/useFetchDocuments';
+
+
 import { useAuthValue } from '../../context/AuthContext'
 
 import { increment } from 'firebase/firestore';
@@ -29,46 +32,43 @@ import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import GroupRemoveIcon from '@mui/icons-material/GroupRemove';
 
 
-const Player = ({ player }) => {
+const Player = ({ search }) => {
     const { user } = useAuthValue()
+
     const { updateDocument, response } = useUpdateDocument('players')
     const { deleteDocument } = useDeleteDocument('players')
-
-    const [data, setData] = useState({})
-
-    const handleSubmit = (action) => {
-        switch (action) {
-            case 'SELECT_PLAYER':
-                setData({
-                    playerActive: !player.playerActive,
-                    uid: user.uid,
-                    createdBy: user.displayName
-                })
-                break;
-            case 'WIN':
-                setData({
-                    pts: increment(1),
-                    uid: user.uid,
-                    createdBy: user.displayName
-                })
-                break;
-            default:
-                break;
-        }
-    }
+    const { documents: players, loading } = useFetchDocuments('players', search, user.uid)
 
     const handleDelete = (id) => {
         deleteDocument(id)
     }
 
-    useEffect(() => {
-        updateDocument(player.id, data)
-    }, [data])
+    const handleSelectPlayer = (id) => {
+        const data = ({
+            playerActive: !search,
+            uid: user.uid,
+            createdBy: user.displayName
+        })
+
+        updateDocument(id, data)
+    }
+
+    const handleWin = (id) => {
+        const data = ({
+            pts: increment(1),
+            uid: user.uid,
+            createdBy: user.displayName
+        })
+
+        updateDocument(id, data)
+    }
 
 
-    const leadingActions = () => (
+
+
+    const leadingActions = (player) => (
         <LeadingActions>
-            <SwipeAction onClick={() => handleSubmit('WIN')}>
+            <SwipeAction onClick={() => handleWin(player.id)}>
                 <div className={styles.win}>
                     <span>win</span>
                 </div>
@@ -76,7 +76,7 @@ const Player = ({ player }) => {
         </LeadingActions>
     );
 
-    const trailingActions = () => (
+    const trailingActions = (player) => (
         <TrailingActions>
 
             <SwipeAction
@@ -90,7 +90,7 @@ const Player = ({ player }) => {
 
             <SwipeAction
                 destructive={true}
-                onClick={() => handleSubmit('SELECT_PLAYER')}
+                onClick={() => handleSelectPlayer(player.id)}
             >
                 {player && player.playerActive ? (
                     <div className={styles.remove}>
@@ -112,37 +112,39 @@ const Player = ({ player }) => {
                 type={ListType.IOS}
                 fullSwipe={true}
             >
-                <SwipeableListItem
-                    leadingActions={leadingActions()}
-                    trailingActions={trailingActions()}
 
+                {players && players.map((player) => (
+                    <SwipeableListItem
+                        key={player.id}
+                        leadingActions={leadingActions(player)}
+                        trailingActions={trailingActions(player)}
+                    >
+                        <List sx={{ width: '100%', padding: '0', maxWidth: 640, bgcolor: 'background.paper' }}>
+                            <ListItem
+                                sx={{ height: '60px' }}
 
-
-                >
-                    <List sx={{ width: '100%', padding: '0', maxWidth: 640, bgcolor: 'background.paper' }}>
-                        <ListItem
-                            sx={{ height: '60px' }}
-                            //key={value}
-                            secondaryAction={
-                                <ListItemText
-                                    edge="end"
-                                    primary={player.pts}
-                                />
-                            }
-                            disablePadding
-                        >
-                            <ListItemButton>
-                                <ListItemAvatar>
-                                    <Avatar
-                                        alt={`Avatar n°`}
-                                        src={`/static/images/avatar/.jpg`}
+                                secondaryAction={
+                                    <ListItemText
+                                        edge="end"
+                                        primary={player.pts}
                                     />
-                                </ListItemAvatar>
-                                <ListItemText id={1} primary={player.playerName} />
-                            </ListItemButton>
-                        </ListItem>
-                    </List>
-                </SwipeableListItem>
+                                }
+                                disablePadding
+                            >
+                                <ListItemButton>
+                                    <ListItemAvatar>
+                                        <Avatar
+                                            alt={`Avatar n°`}
+                                            src={`/static/images/avatar/.jpg`}
+                                        />
+                                    </ListItemAvatar>
+                                    <ListItemText id={1} primary={player.playerName} />
+                                </ListItemButton>
+                            </ListItem>
+                        </List>
+                    </SwipeableListItem>
+                ))}
+
 
 
             </SwipeableList>

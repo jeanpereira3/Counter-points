@@ -2,7 +2,6 @@ import styles from './Home.module.css'
 
 
 import { useAuthValue } from '../../context/AuthContext'
-import { useFetchDocuments } from '../../hooks/useFetchDocuments'
 import { useUpdateDocument } from '../../hooks/useUpdateDocument'
 
 import Player from '../../components/Player/Player'
@@ -14,8 +13,7 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 const Home = () => {
 
     const { user } = useAuthValue()
-    const { documents: players, loading } = useFetchDocuments('players', true)
-    const { updateDocument } = useUpdateDocument('players')
+    const { updateDocument, response } = useUpdateDocument('players')
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -25,12 +23,9 @@ const Home = () => {
             createdBy: user.displayName
         }
 
-        updateDocument(null, data)
+        updateDocument(null, data, user.uid)
 
     }
-
-
-
 
     return (
         <div className={styles.players}>
@@ -41,9 +36,11 @@ const Home = () => {
                 </IconButton>
             </div>
 
-            {players && (players.map((player) => (
-                <Player key={player.id} player={player}></Player>
-            )))}
+            <Player search={true}></Player>
+
+            {response.error && <p>{response.error}</p>}
+            <p></p>
+
         </div>
     )
 

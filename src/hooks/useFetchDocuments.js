@@ -11,7 +11,7 @@ import {
 
 
 
-export const useFetchDocuments = (docCollection, playerActive = null, uid = null, playerName = null) => {
+export const useFetchDocuments = (docCollection, playerActive = null, uid = null) => {
 
 
 
@@ -34,25 +34,16 @@ export const useFetchDocuments = (docCollection, playerActive = null, uid = null
                 if (playerActive != null) {
                     q = await query(
                         collectionRef,
+                        where('uid', '==', uid),
                         where('playerActive', '==', playerActive),
                         orderBy('pts', 'desc')
                     )
-                } else if (uid) {
+                } else {
                     q = await query(
                         collectionRef,
                         where('uid', '==', uid),
                         orderBy('createdAt', 'desc')
                     )
-                } else if (playerName) {
-                    q = await query(
-                        collectionRef,
-                        where('playerName', '==', playerName),
-                        orderBy('createdAt', 'desc')
-                    )
-
-                    console.log(playerName);
-                } else {
-                    q = await query(collectionRef, orderBy('createdAt', 'desc'))
                 }
 
                 await onSnapshot(q, (querySnapshot) => {
@@ -72,7 +63,7 @@ export const useFetchDocuments = (docCollection, playerActive = null, uid = null
         }
 
         loadData()
-    }, [docCollection, playerActive, uid, playerName, cancelled])
+    }, [docCollection, playerActive, uid, cancelled])
 
     useEffect(() => {
         return () => setCancelled(true)

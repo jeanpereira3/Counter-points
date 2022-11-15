@@ -14,11 +14,7 @@ const NavBar = () => {
                 Counter <span>Points</span>
             </NavLink>
             <ul className={styles.links_list}>
-                {/* <li>
-                    <NavLink
-                        className={({ isActive }) => (isActive ? styles.active : '')}
-                        to='/home'>Home</NavLink>
-                </li> */}
+
                 {!user && (
                     <>
                         <li>
@@ -28,28 +24,6 @@ const NavBar = () => {
                         </li>
                     </>
                 )}
-
-                {/* {user && (
-                    <>
-                        <li>
-                            <NavLink
-                                className={({ isActive }) => (isActive ? styles.active : '')}
-                                to='/posts/create'>Novo post</NavLink>
-                        </li>
-                        <li>
-                            <NavLink
-                                className={({ isActive }) => (isActive ? styles.active : '')}
-                                to='/dashboard'>Dashboard</NavLink>
-                        </li>
-
-                    </>
-                )} */}
-
-                {/* <li>
-                    <NavLink
-                        className={({ isActive }) => (isActive ? styles.active : '')}
-                        to='/about'>Sobre</NavLink>
-                </li> */}
 
                 {user && (
                     <li>
