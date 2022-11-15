@@ -8,21 +8,20 @@ import { useUpdateDocument } from '../../hooks/useUpdateDocument'
 
 import Player from '../../components/Player/Player'
 
+
 const Players = () => {
 
     // const [error, setError] = useState('')
     // const { user } = useAuthValue()
 
-    const { documents: players, loading } = useFetchDocuments('players')
+    const { documents: players, loading } = useFetchDocuments('players', false)
     const { updateDocument, response } = useUpdateDocument('players')
+
 
     return (
         <div className={styles.players}>
             {players && (players.map((player) => (
-
-
                 <Player key={player.id} player={player}></Player>
-
             )))}
 
             {response.error && <p className='error'>{response.error}</p>}
@@ -31,4 +30,4 @@ const Players = () => {
     )
 }
 
-export default Players
+export default Players 

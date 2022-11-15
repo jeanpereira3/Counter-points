@@ -1,7 +1,6 @@
 import styles from './CreatedPlayer.module.css'
 
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { useAuthValue } from '../../context/AuthContext'
 import { useInsertDocument } from '../../hooks/useInsertDocument'
 import { useFetchDocuments } from '../../hooks/useFetchDocuments'
@@ -19,7 +18,6 @@ const CreatedPlayer = () => {
     const { insertDocument, response } = useInsertDocument('players')
     const { documents: players, loading, error } = useFetchDocuments('players')
 
-    const navigate = useNavigate()
 
 
 
@@ -49,11 +47,10 @@ const CreatedPlayer = () => {
             })
             setFormSuccess('Jogador adicionado com sucesso')
         }
-        //navigate('/home')
     }
 
     return (
-        <div className={styles.create_post}>
+        <div className={styles.create_player}>
             <h2>Novo Jogador</h2>
             <p>Crie e personalise seu card!</p>
             <form onSubmit={handleSubmit}>
@@ -72,8 +69,12 @@ const CreatedPlayer = () => {
                 {!response.loading && <button className='btn'>Cadastrar</button>}
                 {response.loading && <button className='btn' disabled>Aguarde</button>}
                 {response.error && <p className='error'>{response.error}</p>}
+
+                {loading && <p >carregando...</p>}
+                {error && <p className='error'>{error}</p>}
+
                 {formError && <p className='error'>{formError}</p>}
-                {formSuccess && !response.loading && <p className='success'>{formSuccess}</p>}
+                {formSuccess && !response.loading && !error && <p className='success'>{formSuccess}</p>}
             </form>
         </div>
     )

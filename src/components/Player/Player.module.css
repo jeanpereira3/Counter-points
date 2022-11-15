@@ -1,21 +1,13 @@
-.player {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    height: 60px;
-}
-
-.player span {
-    font-size: 2em;
-}
-
 .win,
-.delete {
-    width: 100%;
-    height: 70px;
+.delete,
+.add,
+.remove {
+    min-width: 65px;
+    height: 100%;
     display: flex;
     align-items: center;
+    justify-content: center !important;
+    color: #FFF;
 }
 
 
@@ -24,13 +16,13 @@
 }
 
 .delete {
-    background: #dc3545;
+    background: #f84052;
 }
 
-.win span {
-    margin-left: 1em;
+.add {
+    background: #4582dd;
 }
 
-.delete span {
-    margin-right: 1em;
+.remove {
+    background: #f3b667;
 }

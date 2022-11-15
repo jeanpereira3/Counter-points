@@ -31,7 +31,7 @@ export const useFetchDocuments = (docCollection, playerActive = null, uid = null
             try {
                 let q
 
-                if (playerActive) {
+                if (playerActive != null) {
                     q = await query(
                         collectionRef,
                         where('playerActive', '==', playerActive),
