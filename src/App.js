@@ -12,7 +12,6 @@ import NavBar from './components/NavBar/NavBar';
 import Footer from './components/Footer/Footer';
 import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
-import Dashboard from './pages/Dashboard/Dashboard';
 import Search from './pages/Search/Search';
 import NavBottom from './components/NavBottom/NavBottom';
 import Players from './pages/Players/Players';
@@ -70,10 +69,7 @@ function App() {
                 path='/player/create'
                 element={user ? <CreatedPlayer></CreatedPlayer> : <Navigate to='/login' />}
               />
-              <Route
-                path='/dashboard'
-                element={user ? <Dashboard></Dashboard> : <Navigate to='/login' />}
-              />
+
             </Routes>
           </div>
           <NavBottom></NavBottom>

@@ -10,6 +10,8 @@ import { useAuthValue } from '../../context/AuthContext'
 
 import { increment } from 'firebase/firestore';
 
+import SkeletonTypography from '../SkeletonTypography/SkeletonTypography';
+
 import {
     LeadingActions,
     SwipeableList,
@@ -30,7 +32,6 @@ import Avatar from '@mui/material/Avatar';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import GroupAddIcon from '@mui/icons-material/GroupAdd';
 import GroupRemoveIcon from '@mui/icons-material/GroupRemove';
-
 
 const Player = ({ search }) => {
     const { user } = useAuthValue()
@@ -62,9 +63,6 @@ const Player = ({ search }) => {
 
         updateDocument(id, data)
     }
-
-
-
 
     const leadingActions = (player) => (
         <LeadingActions>
@@ -106,6 +104,10 @@ const Player = ({ search }) => {
             </SwipeAction>
         </TrailingActions>
     );
+
+    // if (loading) {
+    //     return <SkeletonTypography props={loading}></SkeletonTypography>
+    // }
     return (
         <>
             <SwipeableList
@@ -119,29 +121,36 @@ const Player = ({ search }) => {
                         leadingActions={leadingActions(player)}
                         trailingActions={trailingActions(player)}
                     >
-                        <List sx={{ width: '100%', padding: '0', maxWidth: 640, bgcolor: 'background.paper' }}>
-                            <ListItem
-                                sx={{ height: '60px' }}
 
-                                secondaryAction={
-                                    <ListItemText
-                                        edge="end"
-                                        primary={player.pts}
-                                    />
-                                }
-                                disablePadding
-                            >
-                                <ListItemButton>
-                                    <ListItemAvatar>
-                                        <Avatar
-                                            alt={`Avatar n°`}
-                                            src={`/static/images/avatar/.jpg`}
+                        <List sx={{ width: '100%', padding: '0', maxWidth: 640, bgcolor: 'background.paper' }}>
+                            {loading ? (
+                                <SkeletonTypography props={loading}></SkeletonTypography>
+                            ) : (
+                                <ListItem
+                                    sx={{ height: '60px' }}
+
+                                    secondaryAction={
+                                        <ListItemText
+                                            edge="end"
+                                            primary={player.pts}
                                         />
-                                    </ListItemAvatar>
-                                    <ListItemText id={1} primary={player.playerName} />
-                                </ListItemButton>
-                            </ListItem>
+                                    }
+                                    disablePadding
+                                >
+                                    <ListItemButton>
+                                        <ListItemAvatar>
+                                            <Avatar
+                                                alt={`Avatar n°`}
+                                                src={`/static/images/avatar/.jpg`}
+                                            />
+                                        </ListItemAvatar>
+                                        <ListItemText id={1} primary={player.playerName} />
+                                    </ListItemButton>
+                                </ListItem>
+                            )}
                         </List>
+
+
                     </SwipeableListItem>
                 ))}
 
