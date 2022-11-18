@@ -18,6 +18,9 @@ import NavBottom from './components/NavBottom/NavBottom';
 import Players from './pages/Players/Players';
 import CreatedPlayer from './pages/CreatedPlayer/CreatedPlayer';
 
+import CircularIndeterminate from './components/CircularIndeterminate/CircularIndeterminate';
+
+
 function App() {
   const [user, setUser] = useState(undefined)
   const { auth } = useAuthentication()
@@ -31,7 +34,7 @@ function App() {
   }, [auth])
 
   if (loadingUser) {
-    return <p>Carregando...</p>
+    return <CircularIndeterminate></CircularIndeterminate>
   }
 
   return (
